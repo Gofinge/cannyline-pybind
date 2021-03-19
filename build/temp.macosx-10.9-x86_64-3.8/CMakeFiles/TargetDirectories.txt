@@ -1,0 +1,3 @@
+/Volumes/Gofinge-Home/Documents/projects/cannyline-pybind/build/temp.macosx-10.9-x86_64-3.8/CMakeFiles/rebuild_cache.dir
+/Volumes/Gofinge-Home/Documents/projects/cannyline-pybind/build/temp.macosx-10.9-x86_64-3.8/CMakeFiles/edit_cache.dir
+/Volumes/Gofinge-Home/Documents/projects/cannyline-pybind/build/temp.macosx-10.9-x86_64-3.8/CMakeFiles/cannyline.dir
