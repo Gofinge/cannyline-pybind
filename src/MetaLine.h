@@ -17,36 +17,36 @@ public:
 	MetaLine(void);
 	~MetaLine(void);
 
-	void MetaLineDetection(cv::Mat originalImage,float gausSigma, int gausHalfSize,std::vector<std::vector<float> > &lines);
-    void getInformations(cv::Mat &originalImage,float gausSigma, int gausHalfSize,float p);
+    void getInformation(cv::Mat &originalImage, float gausSigma, int gausHalfSize, float p);
+    std::vector<std::vector<float>> MetaLineDetection(cv::Mat originalImage,float gausSigma, int gausHalfSize);
 
 private:
 	bool smartRouting(clusters_list_t &segments,float minDeviation,int minSize);
 	void getMetaLine(clusters_list_t &segments,lines_list_t &metaLines,float thMSE);
-	void getMetaLine(strings_list_t &strings,lines_list_t &metaLines,float thMSE);
+    //	void getMetaLine(strings_list_t &strings,lines_list_t &metaLines,float thMSE);
 	void metaLineExtending(lines_list_t &metaLines,int *removal);
 	void metaLineMerging(lines_list_t &metaLines,int *removal);
 	void lineValidityCheck(lines_list_t &metaLines,int *removal);
 
 	//
-	bool next(int &x_seed,int &y_seed);
+	bool next(int &x_seed,int &y_seed) const;
 	void subDivision(clusters_list_t &clusters, const string_t &string, const size_t first_index, const size_t last_index, const float min_deviation, const size_t min_size);
 
 	void extendHirozontal(line_t &metaLineCur,lines_list_t  &metaLines,int *removal);
 	void extendVertical(line_t &metaLineCur,lines_list_t  &metaLines,int *removal);
-	int lineMerging(int IDCur,line_t &metaLineCur,size_list_t &IDHyps,lines_list_t &metaLines,float thAngle);
+	static int lineMerging(int IDCur,line_t &metaLineCur,size_list_t &IDHyps,lines_list_t &metaLines,float thAngle);
 	int lineMerging2(int IDCur,line_t &metaLineCur,size_list_t &IDHyps,lines_list_t &metaLines,size_list_t &IDMerged);
 	bool crossingCheck(Point2f pts,Point2f pte,int ID);
 	int crossSearch(Point2i pts,float &angle,int ID);
 
 	bool leastSquareFitting(string_t &string, float *parameters,float thMSE);
-	bool leastSquareFitting(cluster_t &cluster, float *parameters,float thMSE);
+	static bool leastSquareFitting(cluster_t &cluster, float *parameters,float thMSE);
 	bool leastSquareFitting(std::vector<Point2f> &points, float *parameters,float thMSE);
-	bool gradientWeightedLeastSquareFitting(string_t &string,float *parameters,float thMSE);
+	bool gradientWeightedLeastSquareFitting(string_t &string,float *parameters,float thMSE) const;
 
 	float lineValidityCheckGradientLevel(line_t &metaLines);
 	float lineValidityCheckGradientOrientation(line_t &metaLines);
-	float probability(int N,int k,float p);
+	static float probability(int N,int k,float p);
 
 	//
 public:
@@ -54,19 +54,20 @@ public:
 	float sigma;
 	float thAngle;
 
-	int thMeaningfulLength;
+	int thMeaningfulLength{};
 	float visualMeaningfulGradient;
-	float thGradientLow;
-	float thGradientHigh;
+	float thGradientLow{};
+	float thGradientHigh{};
 	cv::Mat cannyEdge;
 
-private:
-	int rows,cols;
-	int rows_1,cols_1 ;
-	int thSearchSteps;
 
-	float N4;
-	float N2;
+private:
+	int rows{},cols{};
+	int rows_1{},cols_1{} ;
+	int thSearchSteps{};
+
+	float N4{};
+	float N2{};
 
 	cv::Mat filteredImage;
 	cv::Mat gradientMap; //the gradient value

@@ -14,10 +14,9 @@ PYBIND11_MODULE(cannyline, m) {
             .def_readwrite("thGradientLow",&MetaLine::thGradientLow)
             .def_readwrite("thGradientHigh",&MetaLine::thGradientHigh)
             .def_readwrite("cannyEdge",&MetaLine::cannyEdge)
-            .def("getInformations", &MetaLine::getInformations, py::arg("original_image"),
-                 py::arg("gause_sigma")=1, py::arg("gause_half_size")=1, py::arg("p")=0.125)
-            .def("line_detection", &MetaLine::MetaLineDetection, py::arg("original_image"),
-                 py::arg("gause_sigma")=1, py::arg("gause_half_size")=1,
-                 py::arg("lines")=std::vector<std::vector<float>>())
+            .def("getInformation", &MetaLine::getInformation, py::arg("original_image"),
+                 py::arg("gauss_sigma")=1, py::arg("gauss_half_size")=1, py::arg("p")=0.125)
+            .def("MetaLineDetection", &MetaLine::MetaLineDetection, py::arg("original_image"),
+                 py::arg("gauss_sigma")=1, py::arg("gauss_half_size")=1)
             ;
 }

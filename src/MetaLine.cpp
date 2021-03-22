@@ -5,7 +5,7 @@
 #define INF 10000000000
 using namespace std;
 
-MetaLine::MetaLine(void)
+MetaLine::MetaLine()
 {
 	visualMeaningfulGradient=70;
 	p=0.125;
@@ -15,10 +15,9 @@ MetaLine::MetaLine(void)
 
 
 MetaLine::~MetaLine(void)
-{
-}
+= default;
 
-bool MetaLine::gradientWeightedLeastSquareFitting(string_t &string,float *parameters,float sigma)
+bool MetaLine::gradientWeightedLeastSquareFitting(string_t &string,float *parameters,float sigma) const
 {
 	int i,j;
 	int N=string.size();
@@ -32,7 +31,7 @@ bool MetaLine::gradientWeightedLeastSquareFitting(string_t &string,float *parame
 	float k=0.0,b=0.0,dev=0.0,temp=0.0;
 	float totalGradient=0;
 	std::vector<float> weight(N,0);
-	float *ptr=(float*) gradientMap.data;
+	auto *ptr=(float*) gradientMap.data;
 	for (i=0;i<N;++i)
 	{
 		weight[i]=*(ptr+int(string[i].y)*cols+int(string[i].x));
@@ -40,7 +39,7 @@ bool MetaLine::gradientWeightedLeastSquareFitting(string_t &string,float *parame
 	}
 	for (i=0;i<N;++i)
 		weight[i]/=totalGradient;
-
+	
 	if (abs(kCoarse)<1)
 	{
 		float sumX=0.0;
@@ -419,7 +418,7 @@ int MetaLine::crossSearch(Point2i pts,float &angle,int ID)
 	int xSeed=pts.x;
 	int ySeed=pts.y;
 	int x,y;
-
+	
 	int count=0;
 	bool isEnd=false;
 	while(count!=10&&!isEnd)
@@ -432,7 +431,6 @@ int MetaLine::crossSearch(Point2i pts,float &angle,int ID)
 				y = ySeed + Y_OFFSET[i];
 				if ((0 <= y) && (y < rows))
 				{
-					cout<<ptrMI[y*cols+x]<<endl;
 					if (ptrMI[y*cols+x]<0&&ptrMI[y*cols+x]!=ID) return -1; //-1 for stop merging
 
 					if (ptrMI[y*cols+x]==1)
@@ -463,7 +461,7 @@ int MetaLine::crossSearch(Point2i pts,float &angle,int ID)
 	}
 	else
 		return 0;  //0 for no edge chain
-
+	
 }
 
 bool MetaLine::crossingCheck(Point2f pts,Point2f pte,int ID)
@@ -514,7 +512,7 @@ bool MetaLine::crossingCheck(Point2f pts,Point2f pte,int ID)
 						return false;
 				}
 			}
-			else
+			else 
 				break;
 		}
 	}
@@ -545,7 +543,7 @@ bool MetaLine::crossingCheck(Point2f pts,Point2f pte,int ID)
 				int e1=(int)ptrMI[loc];
 				int e2=(int)ptrMI[loc+1];
 
-				if ((e0<0&&e0!=ID)||(e1<0&&e1!=ID)||(e2<0&&e2!=ID)) return false; //find another line
+				if ((e0<0&&e0!=ID)||(e1<0&&e1!=ID)||(e2<0&&e2!=ID)) return false; //find another line 
 				if (e0==1||e1==1||e2==1)
 				{
 					float angleEdge=0;
@@ -672,20 +670,20 @@ void MetaLine::extendHirozontal(line_t &metaLineCur,lines_list_t  &metaLines,int
 			{
 				if ((m0==1||m1==1||m2==1)&&(m0+m1+m2)==1)
 				{
-					if (m0==1&&m0>=m1&&m0>=m2)
+					if (m0==1&&m0>=m1&&m0>=m2) 
 					{
 						pixel_t &p=metaLineCur.points.push_back();
 						p.x=xInt;  p.y=yInt;
 						ptrMI[loc]=-ID;
-
+						
 					}
-					else if (m1==1&&m1>=m0&&m1>=m2)
+					else if (m1==1&&m1>=m0&&m1>=m2) 
 					{
 						pixel_t &p=metaLineCur.points.push_back();
 						p.x=xInt;  p.y=yInt-1;
 						ptrMI[loc-cols]=-ID;
 					}
-					else if (m2==1&&m2>=m0&&m2>=m1)
+					else if (m2==1&&m2>=m0&&m2>=m1) 
 					{
 						if (chooseUp) {gap++;continue;};
 						pixel_t &p=metaLineCur.points.push_back();
@@ -781,7 +779,7 @@ void MetaLine::extendVertical(line_t &metaLineCur,lines_list_t  &metaLines,int *
 	int gap=0;
 	int edge=0;
 	int edgeTotal=0;
-
+	
 	float m0,m1,m2;
 	float g0,g1,g2;
 	bool extend=false;
@@ -857,19 +855,19 @@ void MetaLine::extendVertical(line_t &metaLineCur,lines_list_t  &metaLines,int *
 			{
 				if ((m0==1||m1==1||m2==1)&&(m0+m1+m2)==1)
 				{
-					if (m0==1&&m0>=m1&&m0>=m2)
+					if (m0==1&&m0>=m1&&m0>=m2) 
 					{
 						pixel_t &p=metaLineCur.points.push_back();
 						p.x=xInt;  p.y=yInt;
 						ptrMI[loc]=-ID;
 					}
-					else if (m1==1&&m1>=m0&&m1>=m2)
+					else if (m1==1&&m1>=m0&&m1>=m2) 
 					{
 						pixel_t &p=metaLineCur.points.push_back();
 						p.x=xInt-1;  p.y=yInt;
 						ptrMI[loc-1]=-ID;
 					}
-					else if (m2==1&&m2>=m0&&m2>=m1)
+					else if (m2==1&&m2>=m0&&m2>=m1) 
 					{
 						if (chooseLeft) {gap++;continue;};
 						pixel_t &p=metaLineCur.points.push_back();
@@ -951,13 +949,13 @@ float MetaLine::probability(int N,int k,float p)
 	return prob;
 }
 
-void MetaLine::getInformations(cv::Mat &originalImage,float gausSigma, int gausHalfSize,float p)
+void MetaLine::getInformation(cv::Mat &originalImage, float gausSigma, int gausHalfSize, float p)
 {
 	int i,j,m,n;
 	int grayLevels=255;
 	int apertureSize=3;
 	float anglePer=CV_PI/8.0;
-	float gNoise=1.3333;//1.3333
+	float gNoise=1.3333;//1.3333 
 	thGradientLow=gNoise;
 
 	cols = originalImage.cols;
@@ -1099,15 +1097,15 @@ void MetaLine::getInformations(cv::Mat &originalImage,float gausSigma, int gausH
 
 	//convert probabilistic meaningful to visual meaningful
 	thGradientHigh=sqrt(thGradientHigh*visualMeaningfulGradient);
-
+	
 	//canny
 	cv::Canny(filteredImage,cannyEdge,thGradientLow,thGradientHigh,apertureSize);
 
 	//
 	int num=0;
 	uchar *ptrCanny=cannyEdge.data;
-	float *ptrM=(float*)maskImage.data;
-	float *ptrG=(float*)gradientMap.data;
+	auto *ptrM=(float*)maskImage.data;
+	auto *ptrG=(float*)gradientMap.data;
 	for (i=0;i<rows;++i)
 	{
 		for (j=0;j<cols;++j)
@@ -1115,7 +1113,7 @@ void MetaLine::getInformations(cv::Mat &originalImage,float gausSigma, int gausH
 			if (*ptrCanny++)
 			{
 				*ptrM++=1;
-				gradientPoints.push_back(Point(j,i));
+				gradientPoints.emplace_back(j,i);
 				gradientValue.push_back(ptrG[i*cols+j]);
 				num++;
 			}
@@ -1127,10 +1125,10 @@ void MetaLine::getInformations(cv::Mat &originalImage,float gausSigma, int gausH
 	}
 }
 
-bool MetaLine::next(int &xSeed,int &ySeed)
+bool MetaLine::next(int &xSeed,int &ySeed) const
 {
 	int x, y;
-	float *ptrM=(float *)maskImage.data;
+	auto *ptrM=(float *)maskImage.data;
 	uchar *ptrO=orientationMapInt.data;
 
 	int direction=ptrO[ySeed*cols+xSeed];
@@ -1208,12 +1206,14 @@ bool MetaLine::smartRouting(clusters_list_t &segments,float minDeviation,int min
 	if (minSize<3) minSize=3;
 
 	cv::Mat maskImageOri=maskImage.clone();
-	float* ptrM=(float*)maskImage.data;
+	auto* ptrM=(float*)maskImage.data;
 	uchar *ptrO=orientationMapInt.data;
 
 	//get the sorted gradient points
 	int numGradientPoints=gradientPoints.size();
-	QuickSort<float,cv::Point>::SortDescent(&gradientValue[0], 0, numGradientPoints-1, &gradientPoints[0]);
+	    if (numGradientPoints != 0){
+        QuickSort<float,cv::Point>::SortDescent(&gradientValue[0], 0, numGradientPoints-1, &gradientPoints[0]);
+    }
 
 	//find strings
 	strings_list_t strings;
@@ -1234,7 +1234,7 @@ bool MetaLine::smartRouting(clusters_list_t &segments,float minDeviation,int min
 		}
 		while (next( x, y));
 
-		pixel_t temp;
+		pixel_t temp{};
 		for (m=0, n=str.size()-1; m<n; ++m, --n)
 		{
 			temp = str[m];
@@ -1258,46 +1258,46 @@ bool MetaLine::smartRouting(clusters_list_t &segments,float minDeviation,int min
 		}
 		if (str.size()<thMeaningfulLength)
 			strings.pop_back();
-
+		
 	}
 	maskImage=maskImageOri;
 
 	//show
-	cv::Mat stringsImage(rows,cols,CV_8UC3,cv::Scalar(0,0,0));
-
-	CvFont font;
-	double hScale=1.0;
-	double vScale=1.0;
-	cvInitFont(&font,CV_FONT_HERSHEY_PLAIN, hScale,vScale,0,1);
-
-	std::vector<cv::Scalar> colors(7);
-	for (i=0;i<7;++i)
-	{
-		int R=int(double(rand())/RAND_MAX*255);
-		int G=int(double(rand())/RAND_MAX*255);
-		int B=int(double(rand())/RAND_MAX*255);
-
-		colors[i]=Scalar(R,G,B);
-	}
-	for (i=0;i<strings.size();++i)
-	{
-		int R=colors[(i%7)].val[0];
-		int G=colors[(i%7)].val[1];
-		int B=colors[(i%7)].val[2];
-		for (j=0;j<strings[i].size();++j)
-		{
-			int x=strings[i][j].x;
-			int y=strings[i][j].y;
-			*(stringsImage.data+3*(y*cols+x)+0)=R;
-			*(stringsImage.data+3*(y*cols+x)+1)=G;
-			*(stringsImage.data+3*(y*cols+x)+2)=B;
-		}
+//	cv::Mat stringsImage(rows,cols,CV_8UC3,cv::Scalar(0,0,0));
+//
+//	CvFont font;
+//	double hScale=1.0;
+//	double vScale=1.0;
+//	cvInitFont(&font,CV_FONT_HERSHEY_PLAIN, hScale,vScale,0,1);
+//
+//	std::vector<cv::Scalar> colors(7);
+//	for (i=0;i<7;++i)
+//	{
+//		int R=int(double(rand())/RAND_MAX*255);
+//		int G=int(double(rand())/RAND_MAX*255);
+//		int B=int(double(rand())/RAND_MAX*255);
+//
+//		colors[i]=Scalar(R,G,B);
+//	}
+//	for (i=0;i<strings.size();++i)
+//	{
+//		int R=colors[(i%7)].val[0];
+//		int G=colors[(i%7)].val[1];
+//		int B=colors[(i%7)].val[2];
+//		for (j=0;j<strings[i].size();++j)
+//		{
+//			int x=strings[i][j].x;
+//			int y=strings[i][j].y;
+//			*(stringsImage.data+3*(y*cols+x)+0)=R;
+//			*(stringsImage.data+3*(y*cols+x)+1)=G;
+//			*(stringsImage.data+3*(y*cols+x)+2)=B;
+//		}
 		// char text[100];
 		// sprintf(text,"%d", i);
 		// Point mid=Point(strings[i][strings[i].size()/2].x,strings[i][strings[i].size()/2].y);
 		// cv::putText(stringsImage,text,mid,1,1,colors[i%7],1);
-	}
-	imwrite("../image/stringsImage.bmp",stringsImage);
+//	}
+//	imwrite("../image/stringsImage.bmp",stringsImage);
 // 	imshow("",stringsImage);
 // 	cv::waitKey(0);
 
@@ -1316,41 +1316,40 @@ bool MetaLine::smartRouting(clusters_list_t &segments,float minDeviation,int min
 // 		int R=int(double(rand())/RAND_MAX*255);
 // 		int G=int(double(rand())/RAND_MAX*255);
 // 		int B=int(double(rand())/RAND_MAX*255);
-//
+// 
 // 		colors[i]=Scalar(R,G,B);
 // 	}
-	int times=1;
-	cv::Mat clustersImage(times*rows,times*cols,CV_8UC3,cv::Scalar(0,0,0));
-	for (i=0;i<segments.size();++i)
-	{
-		int R=colors[(i%7)].val[0];
-		int G=colors[(i%7)].val[1];
-		int B=colors[(i%7)].val[2];
-		for (j=0;j<segments[i].size;++j)
-		{
-			int x=times*segments[i].pixels[j].x;
-			int y=times*segments[i].pixels[j].y;
-			*(clustersImage.data+3*(y*times*cols+x)+0)=R;
-			*(clustersImage.data+3*(y*times*cols+x)+1)=G;
-			*(clustersImage.data+3*(y*times*cols+x)+2)=B;
-		}
-
-		char text[100];
-		sprintf(text,"%d", i);
-		Point mid=times*cv::Point(int(segments[i].pixels[segments[i].size/2].x),int(segments[i].pixels[segments[i].size/2].y));
-		//cv::putText(clustersImage,text,mid,1,1,colors[i%7],1);
-	}
-	imwrite("../image/clustersImage.bmp",clustersImage);
+//	int times=1;
+//	cv::Mat clustersImage(times*rows,times*cols,CV_8UC3,cv::Scalar(0,0,0));
+//	for (i=0;i<segments.size();++i)
+//	{
+//		int R=colors[(i%7)].val[0];
+//		int G=colors[(i%7)].val[1];
+//		int B=colors[(i%7)].val[2];
+//		for (j=0;j<segments[i].size;++j)
+//		{
+//			int x=times*segments[i].pixels[j].x;
+//			int y=times*segments[i].pixels[j].y;
+//			*(clustersImage.data+3*(y*times*cols+x)+0)=R;
+//			*(clustersImage.data+3*(y*times*cols+x)+1)=G;
+//			*(clustersImage.data+3*(y*times*cols+x)+2)=B;
+//		}
+//
+//		char text[100];
+//		sprintf(text,"%d", i);
+//		Point mid=times*cv::Point(int(segments[i].pixels[segments[i].size/2].x),int(segments[i].pixels[segments[i].size/2].y));
+//		//cv::putText(clustersImage,text,mid,1,1,colors[i%7],1);
+//	}
+//	imwrite("../image/clustersImage.bmp",clustersImage);
 // 	imshow(" ",clustersImage);
 // 	cv::waitKey(0);
-
-	return 1;
+	return true;
 }
 
 void MetaLine::getMetaLine(clusters_list_t &segments,lines_list_t &metaLines,float sigma)
 {
 	int i,j;
-	float* ptrMaskImage=(float*)maskImage.data;
+	auto* ptrMaskImage=(float*)maskImage.data;
 
 	//get meta lines
 	int numSegments=segments.size();
@@ -1393,26 +1392,23 @@ void MetaLine::getMetaLine(clusters_list_t &segments,lines_list_t &metaLines,flo
 	}
 }
 
-void MetaLine::MetaLineDetection(cv::Mat originalImage,float gausSigma, int gausHalfSize,std::vector<std::vector<float> > &lines)
+std::vector<std::vector<float>> MetaLine::MetaLineDetection(cv::Mat originalImage,float gausSigma, int gausHalfSize)
 {
 	int i,j;
-	std::cout<<"getInformations"<<std::endl;
-	getInformations(originalImage, gausSigma,  gausHalfSize,p);
+    std::vector<std::vector<float> > lines;
+    getInformation(originalImage, gausSigma, gausHalfSize, p);
 
 	//smart routing
 	float minDeviation=2.0;
 	int minSize=thMeaningfulLength/2;
 	clusters_list_t segments;
-	std::cout<<"smartRouting"<<std::endl;
 	smartRouting(segments,minDeviation,minSize);
 
 	//get initial meta lines
 	lines_list_t metaLines;
-	std::cout<<"getMetaLine"<<std::endl;
 	getMetaLine(segments,metaLines,sigma);
 
 	//meta line extending
-	std::cout<<"metaLineExtending"<<std::endl;
 	int *removal=(int *)malloc(metaLines.size()*sizeof(int));
 	memset(removal,0,metaLines.size()*sizeof(int));
     metaLineExtending(metaLines,removal);
@@ -1421,7 +1417,6 @@ void MetaLine::MetaLineDetection(cv::Mat originalImage,float gausSigma, int gaus
 	//metaLineMerging(metaLines,removal);
 
 	//line validity check
-	std::cout<<"lineValidityCheck"<<std::endl;
 	lineValidityCheck(metaLines,removal);
 
 	//get lines
@@ -1440,6 +1435,7 @@ void MetaLine::MetaLineDetection(cv::Mat originalImage,float gausSigma, int gaus
 		}
 	}
     free(removal);
+    return lines;
 }
 
 int MetaLine::lineMerging(int IDCur,line_t &metaLineCur,size_list_t &lineHyps,lines_list_t &metaLines,float thAngle)
@@ -1508,7 +1504,7 @@ int MetaLine::lineMerging(int IDCur,line_t &metaLineCur,size_list_t &lineHyps,li
 
 					return metaIDHyp;
 				}
-
+				
 			}
 			if (dis_e<dis_s&&dis_e<thDis)
 			{
@@ -1524,7 +1520,7 @@ int MetaLine::lineMerging(int IDCur,line_t &metaLineCur,size_list_t &lineHyps,li
 
 					return metaIDHyp;
 				}
-
+				
 			}
 			return -1;
 		}
@@ -1546,7 +1542,7 @@ int MetaLine::lineMerging(int IDCur,line_t &metaLineCur,size_list_t &lineHyps,li
 
 					return metaIDHyp;
 				}
-
+				
 			}
 			if (dis_e<dis_s&&dis_e<thDis)
 			{
@@ -1562,7 +1558,7 @@ int MetaLine::lineMerging(int IDCur,line_t &metaLineCur,size_list_t &lineHyps,li
 
 					return metaIDHyp;
 				}
-
+				
 			}
 			return -1;
 		}
@@ -1590,9 +1586,9 @@ int MetaLine::lineMerging2(int IDCur,line_t &metaLineCur,size_list_t &lineHyps,l
 		xeCur=metaLines[lineHyps[i]].xe;
 		yeCur=metaLines[lineHyps[i]].ye;
 
-		float deviation1 = float( abs( ((xsCur - xs) * (ys - ye)) + ((ysCur - ys) * (xe - xs)) ) );
+		auto deviation1 = float( abs( ((xsCur - xs) * (ys - ye)) + ((ysCur - ys) * (xe - xs)) ) );
 		deviation1/=length;
-		float deviation2 = float( abs( ((xeCur - xs) * (ys - ye)) + ((yeCur - ys) * (xe - xs)) ) );
+		auto deviation2 = float( abs( ((xeCur - xs) * (ys - ye)) + ((yeCur - ys) * (xe - xs)) ) );
 		deviation2/=length;
 		if (deviation1+deviation2>2*thDev) removal[i]=1;
 	}
@@ -1621,10 +1617,12 @@ int MetaLine::lineMerging2(int IDCur,line_t &metaLineCur,size_list_t &lineHyps,l
 	}
 
 	//merging judge
-	if (IDHypsNew.size())
+	if (!IDHypsNew.empty())
 	{
 		//sort according to dis
-		QuickSort<float,int>::SortAscent(&dis[0], 0, dis.size()-1, &IDHypsNew[0]);
+		if (dis.size() != 0){
+		    QuickSort<float,int>::SortAscent(&dis[0], 0, dis.size()-1, &IDHypsNew[0]);
+		}
 
 		for (i=0;i<IDHypsNew.size();++i)
 		{
@@ -1747,7 +1745,14 @@ void MetaLine::metaLineExtending(lines_list_t &metaLines,int *removal)
 			length.push_back(metaLines[i].points.size());
 		}
 	}
-	QuickSort<int,int>::SortDescent(&length[0], 0, length.size()-1, &index[0]);
+
+	if (length.size() == 0){
+        return;
+	}
+
+    if (length.size() != 0){
+        QuickSort<int,int>::SortDescent(&length[0], 0, length.size()-1, &index[0]);
+    }
 
 	for (i=0;i<length.size();++i)
 	{
@@ -1828,7 +1833,9 @@ void MetaLine::metaLineMerging(lines_list_t &metaLines,int *removal)
 			length.push_back(metaLines[i].points.size());
 		}
 	}
-	QuickSort<int,int>::SortDescent(&length[0], 0, length.size()-1, &index[0]);
+	if (length.size() != 0){
+	    QuickSort<int,int>::SortDescent(&length[0], 0, length.size()-1, &index[0]);
+	}
 
 	//creat line bins
 	int numBins=16;
@@ -1890,7 +1897,7 @@ void MetaLine::metaLineMerging(lines_list_t &metaLines,int *removal)
 				if (Rnt)
 				{
 					for (j=0;j<lineIDMerged.size();++j)
-						removal[lineIDMerged[j]]=1;
+						removal[lineIDMerged[j]]=1;	
 				}
 			}
 		}
@@ -1904,12 +1911,12 @@ void MetaLine::subDivision(clusters_list_t &clusters, const string_t &string, co
 
 	const pixel_t &first = string[first_index];
 	const pixel_t &last = string[last_index];
-
+	
 	// Compute the length of the straight line segment defined by the endpoints of the cluster.
 	int x = first.x - last.x;
 	int y = first.y - last.y;
 	float length = sqrt( static_cast<float>( (x * x) + (y * y) ) );
-
+	
 	// Find the pixels with maximum deviation from the line segment in order to subdivide the cluster.
 	size_t max_pixel_index = 0;
 	float deviation, max_deviation = -1.0;
@@ -1917,7 +1924,7 @@ void MetaLine::subDivision(clusters_list_t &clusters, const string_t &string, co
 	for (size_t i=first_index, count=string.size(); i!=last_index; i=(i+1)%count)
 	{
 		const pixel_t &current = string[i];
-
+		
 		deviation = static_cast<float>( abs( ((current.x - first.x) * (first.y - last.y)) + ((current.y - first.y) * (last.x - first.x)) ) );
 
 		if (deviation > max_deviation)
@@ -1927,7 +1934,7 @@ void MetaLine::subDivision(clusters_list_t &clusters, const string_t &string, co
 		}
 	}
  	max_deviation /= length;
-//
+// 
 // 	// Compute the ratio between the length of the segment and the maximum deviation.
 // 	float ratio = length / std::max( max_deviation, min_deviation );
 
@@ -2004,7 +2011,9 @@ float MetaLine::lineValidityCheckGradientLevel(line_t &metaLines)
 	}
 
 	//sort
-	QuickSort<float,int>::SortDescent(&gradient[0], 0, gradient.size()-1);
+	if (gradient.size() != 0){
+	    QuickSort<float,int>::SortDescent(&gradient[0], 0, gradient.size()-1);
+	}
 
 	int index=int(gradient[gradient.size()-1]+0.5);
 	float probability=pow(greaterThan[index],numPoints);
@@ -2037,6 +2046,6 @@ float MetaLine::lineValidityCheckGradientOrientation(line_t &metaLines)
 	}
 
 	int count=max(count1,count2);
-
+	
 	return probability(count3,count,p);
 }

@@ -9,10 +9,10 @@
 class CannyLine
 {
 public:
-	CannyLine(void);
-	~CannyLine(void);
+	CannyLine();
+	~CannyLine();
 
-	static void cannyLine(cv::Mat &image,std::vector<std::vector<float> > &lines);
+	static std::vector<std::vector<float>> cannyLine(cv::Mat &image);
 };
 
 #endif // _CANNY_LINE_H_

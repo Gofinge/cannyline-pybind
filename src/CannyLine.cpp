@@ -2,17 +2,17 @@
 #include "MetaLine.h"
 
 CannyLine::CannyLine(void)
-{
-}
+= default;
 
 CannyLine::~CannyLine(void)
-{
-}
+= default;
 
-void CannyLine::cannyLine(cv::Mat &image,std::vector<std::vector<float> > &lines)
+std::vector<std::vector<float>> CannyLine::cannyLine(cv::Mat &image)
 {
 	MetaLine deterctor;
 	float gausSigma=1.0;
 	int gausHalfSize=1;
-	deterctor.MetaLineDetection(image,gausSigma,gausHalfSize,lines);
+    std::vector<std::vector<float>> lines;
+	lines = deterctor.MetaLineDetection(image,gausSigma,gausHalfSize);
+    return lines;
 }
