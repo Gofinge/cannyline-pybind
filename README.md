@@ -14,7 +14,8 @@ make install
 
 ```shell
 # compile cannyline
-python3 setup.py develop
+python3 setup.py build
+# Then move the *.so to your project, you can import the module directly.
 ```
 ## run
 ```
