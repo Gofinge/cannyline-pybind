@@ -2,7 +2,9 @@
 
 # Usage
 ## requirements
+```shell
 sudo apt install cmake gcc g++ libopencv-dev pybind11-dev
+```
 
 ## install
 ```shell
