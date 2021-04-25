@@ -1,6 +1,9 @@
 # CannyLine Pybind
 
 # Usage
+## requirements
+sudo apt install cmake gcc g++ libopencv-dev pybind11-dev
+
 ## install
 ```shell
 # install pybind11
